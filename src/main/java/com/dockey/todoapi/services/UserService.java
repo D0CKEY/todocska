@@ -1,9 +1,6 @@
 package com.dockey.todoapi.services;
 
-import com.dockey.todoapi.entities.Role;
-import com.dockey.todoapi.entities.RoleRepository;
-import com.dockey.todoapi.entities.User;
-import com.dockey.todoapi.entities.UserRepository;
+import com.dockey.todoapi.entities.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,6 @@ import java.util.List;
 
 @Service
 public class UserService {
-
-    protected final Log LOGGER = LogFactory.getLog(getClass());
 
     @Autowired
     private UserRepository userRepo;
@@ -32,6 +27,10 @@ public class UserService {
         Role roleUser = roleRepo.findByName("ROLE_USER");
         user.addRole(roleUser);
         userRepo.save(user);
+    }
+
+    public void removeUser(Long id) {
+        userRepo.deleteById(id);
     }
 
     public List<User> listAll() {

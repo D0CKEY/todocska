@@ -1,62 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org"
-	  lang="en">
+      xmlns:sec="http://www.thymeleaf.org"
+      lang="en">
 <head>
 
-<head>
-	<meta charset="utf-8">
-	<title>Felhasználók listázása</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<style>
-		.space {width: 10px; height: auto; display: inline-block;}
-	</style>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <title>Felhasználók listázása</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <style>
+            .space {
+                width: 10px;
+                height: auto;
+                display: inline-block;
+            }
+        </style>
+    </head>
 <body>
 <div class="container text-center">
-	<div>
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" />
-		</form>
-	</div>
-	<div>
-		<h1>Felhasználók listázása</h1>
-	</div>
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+    <div>
+        <h1>Felhasználók listázása</h1>
+    </div>
 
 </div>
 Authenticated username:
 <div sec:authentication="name"></div>
 Authenticated user roles:
 <div sec:authentication="principal.authorities"></div>
-
-	<div>
-		<table class="table table-striped table-bordered">
-			<thead class="thead-dark">
-			<tr>
-				<th>User ID</th>
-				<th>E-mail</th>
-				<th>Username</th>
-				<th>Roles</th>
-				<th>Edit</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="user: ${listUsers}">
-				<td th:text="${user.id}">User ID</td>
-				<td th:text="${user.email}">E-mail</td>
-				<td th:text="${user.username}">Username</td>
-				<td th:text="${user.roles}">Roles</td>
-				<td th:if="${#authentication.name} == ${user.username}">
-					<a th:href="@{'/users/edit/' + ${user.id}}">Edit</a>
-				<td th:unless="${#authentication.name} == ${user.username}">-</td>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
+<div th:text="${admin}"></div>
+<div>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>User ID</th>
+            <th>E-mail</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${listUsers}">
+            <td th:text="${user.id}">User ID</td>
+            <td th:text="${user.email}">E-mail</td>
+            <td th:text="${user.username}">Username</td>
+            <td th:text="${user.roles}">Roles</td>
+            <td th:if="${#authentication.name == user.username or admin}">
+                <a th:href="@{'/users/edit/' + ${user.id}}">Szerkesztés</a>
+            </td>
+            <td th:if="${#authentication.name == user.username or admin}">
+                <a th:onclick="'javascript:deleteUser(' + ${user.id} + ')'" rel="nofollow" href="#">Törlés</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+</div>
+<script>
+
+    function deleteUser(userId)
+    {
+        $.ajax('/users/' + userId, {
+            type: 'DELETE',
+            dataType: 'json', // type of response data
+            timeout: 500,     // timeout milliseconds
+            success: function (resp, status, xhr) {   // success callback function
+               console.log(resp);
+            },
+            error: function (resp, textStatus, errorMessage) { // error callback
+                console.log(resp);
+            }
+        });
+    }
+</script>
 </body>
 </html>
