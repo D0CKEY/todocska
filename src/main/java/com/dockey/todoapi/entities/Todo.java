@@ -3,8 +3,10 @@ package com.dockey.todoapi.entities;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Table(name = "todo")
 @Entity
@@ -17,6 +19,9 @@ public class Todo {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "gid", nullable = false)
+    private Long gid;
+
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -24,7 +29,8 @@ public class Todo {
     private String megnevezes;
 
     @Column(name = "hatarido", nullable = false)
-    private String hatarido;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate hatarido;
 
     @Column(name = "kesz", nullable = false)
     private Boolean kesz;
