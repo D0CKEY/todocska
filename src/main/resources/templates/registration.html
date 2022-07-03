@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org"
-      lang="en">
-<head>
+      lang="hu">
 <head>
     <meta charset="utf-8">
     <title>Regisztracio</title>
@@ -17,7 +15,8 @@
     <div>
         <h1>Felhasználó regisztráció</h1>
     </div>
-    <form th:action="@{/registration_process}" th:object="${user}" method="post" style="max-width: 600px; margin: 0 auto;">
+    <form th:action="@{/registration_process}" th:object="${user}" method="post"
+          style="max-width: 600px; margin: 0 auto;">
         <div class="m-3">
             <div class="form-group row">
                 <label class="col-4 col-form-label">Név: </label>

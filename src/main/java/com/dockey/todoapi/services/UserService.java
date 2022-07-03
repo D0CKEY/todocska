@@ -1,8 +1,9 @@
 package com.dockey.todoapi.services;
 
-import com.dockey.todoapi.entities.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.dockey.todoapi.entities.Role;
+import com.dockey.todoapi.entities.User;
+import com.dockey.todoapi.entities.RoleRepository;
+import com.dockey.todoapi.entities.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,7 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public User get(Long id) {
-        return userRepo.findById(id).get();
-    }
+    public User get(Long id) {return userRepo.findById(id).get(); }
 
     public List<Role> listRoles() {
         return roleRepo.findAll();
