@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "todo")
 @Entity
@@ -34,5 +35,9 @@ public class Todo {
 
     @Column(name = "kesz", nullable = false)
     private Boolean kesz;
+
+    @OneToMany
+    @JoinColumn(name = "gid", foreignKey = @ForeignKey(name = "FK_USER_ID"))
+    private List<Todo> todos;
 
 }

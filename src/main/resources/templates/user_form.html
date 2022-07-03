@@ -11,7 +11,7 @@
 <body>
 <div class="container text-center">
     <div>
-        <h1>Edit User</h1>
+        <h1>Felhasználó szerkesztése</h1>
     </div>
     <form th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 600px; margin: 0 auto;">
 
@@ -56,7 +56,7 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-4 col-form-label">Roles: </label>
+                <label class="col-4 col-form-label">Jogosultságok: </label>
                 <div class="col-8">
                     <th:block th:each="role: ${listRoles}">
                         <input type="checkbox" th:field="*{roles}"

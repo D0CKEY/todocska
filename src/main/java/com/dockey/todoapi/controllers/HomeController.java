@@ -56,10 +56,10 @@ public class HomeController {
         return "user_form";
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/{id}")  // USER TORLESE
     public void deleteUser(@PathVariable("id") Long id){
         service.removeUser(id);
-        }
+    }
 
     @PostMapping("/users/save") // USER SZERKESZTESENEK MENTESE
     public String saveUser(User user) {
