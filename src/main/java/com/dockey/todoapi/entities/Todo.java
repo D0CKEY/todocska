@@ -1,8 +1,9 @@
 package com.dockey.todoapi.entities;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,18 +14,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "gid", nullable = false)
-    private Long gid;
-
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "megnevezes", nullable = false)
     private String megnevezes;
@@ -36,8 +30,7 @@ public class Todo {
     @Column(name = "kesz", nullable = false)
     private Boolean kesz;
 
-    @OneToMany
-    @JoinColumn(name = "gid", foreignKey = @ForeignKey(name = "FK_USER_ID"))
-    private List<Todo> todos;
+    @Column(name = "gid", nullable = false)
+    private Long gid;
 
 }

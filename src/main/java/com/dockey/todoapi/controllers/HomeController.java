@@ -1,6 +1,8 @@
 package com.dockey.todoapi.controllers;
 
 import com.dockey.todoapi.entities.Role;
+import com.dockey.todoapi.entities.Todo;
+import com.dockey.todoapi.entities.TodoRepository;
 import com.dockey.todoapi.entities.User;
 import com.dockey.todoapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ public class HomeController {
     @Autowired
     private UserService service;
 
+    private final TodoRepository todoRepository;
+
+    public HomeController(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
+
     @GetMapping("/")
     public String index(Model model) {
         return "index";
@@ -40,7 +48,7 @@ public class HomeController {
     }
 
     @GetMapping("/users")  // USEREK KILISTAZASA
-    public String listUsers(Model model, Authentication    authentication) {
+    public String listUsers(Model model, Authentication authentication) {
         List<User> listUsers = service.listAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("admin", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
@@ -66,6 +74,28 @@ public class HomeController {
         service.save(user);
         return "redirect:/users";
     }
+
+    @GetMapping("/users/{id}/todos")  // TODO KILISTAZASA
+    public String listTodo(@PathVariable("id") Long id, Model model) {
+        List<Todo> listTodos = service.listTodos(id);
+        model.addAttribute("listTodos", listTodos);
+        return "todos";
+    }
+
+    @PostMapping("/users/todo/{todoId}") // TODO SZERKESZTESENEK MENTESE
+    public String saveUser(@PathVariable("todoId") Long todoId, Todo todo) {
+        todoRepository.save(todo);
+        return "redirect:/users/{todoGid}/todos";
+    }
+
+    @GetMapping("/users/todo/{todoId}")  // TODO SZERKESZTESE
+    public String editTodo(@PathVariable("todoId") Long todoId, Model model) {
+        Todo todo = todoRepository.findById(todoId).get();
+        model.addAttribute("todo", todo);
+        return "todo_form";
+    }
+
+
     //create = POST /users
     //update = Put /users/id
     //delete = delete /users/id

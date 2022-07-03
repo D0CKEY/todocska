@@ -48,7 +48,7 @@
                     <a th:onclick="'javascript:deleteUser(' + ${user.id} + ')'" rel="nofollow" href="#">Törlés</a>
                 </td>
                 <td th:if="${#authentication.name == user.username or admin}">
-                    <a th:href="@{'/users/todo/' + ${user.id}}">TODO</a>
+                    <a th:href="@{|/users/${user.id}/todos/|}">TODO</a>
                 </td>
             </tr>
             </tbody>

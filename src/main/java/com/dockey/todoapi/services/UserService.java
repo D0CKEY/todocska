@@ -1,10 +1,8 @@
 package com.dockey.todoapi.services;
 
-import com.dockey.todoapi.entities.Role;
-import com.dockey.todoapi.entities.User;
-import com.dockey.todoapi.entities.RoleRepository;
-import com.dockey.todoapi.entities.UserRepository;
+import com.dockey.todoapi.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,9 @@ public class UserService {
 
     @Autowired
     RoleRepository roleRepo;
+
+    @Autowired
+    TodoRepository todoRepo;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -52,5 +53,9 @@ public class UserService {
     private void encodePassword(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+    }
+
+    public List<Todo> listTodos(Long gid) {
+        return todoRepo.findAllByGid(gid);
     }
 }

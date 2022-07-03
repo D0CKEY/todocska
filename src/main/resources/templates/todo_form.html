@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="hu">
+<head>
+    <meta charset="utf-8">
+    <title>TODO szerkesztés</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>TODO szerkesztése</h1>
+    </div>
+    <form th:action="@{|/users/todo/${todo.id}|}" th:object="${todo}" method="post" style="max-width: 600px; margin: 0 auto;">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="m-3">
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Megnevezés: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{megnevezes}" class="form-control" required/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Határidő: </label>
+                <div class="col-8">
+                    <input type="date" th:field="*{hatarido}" class="form-control" required/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Kész: </label>
+                <div class="col-8">
+                    <input th:value="${todo.kesz}" id="kesz" type="checkbox" class="m-2"/>
+                    <label for="kesz">Kész?</label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Mentés</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

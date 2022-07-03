@@ -54,22 +54,22 @@ public class WebserviceController {
         return todoRepository.findAll();
     }
 
-    @GetMapping("/users/{userId}/todo/{todoId}")
+    @GetMapping("/users/{userId}/todos/{todoId}")
     public Optional<Todo> getTodo(@PathVariable("todoId") Long todoId){
         return todoRepository.findById(todoId);
     }
 
-    @PostMapping("/users/{userId}/todo")
+    @PostMapping("/users/{userId}/todos")
     public Todo newTodo(@RequestBody Todo todo){
         return this.todoRepository.save(todo);
     }
 
-    @PutMapping("/users/{userId}/todo/{todoId}")
+    @PutMapping("/users/{userId}/todos/{todoId}")
     public Optional<Todo> updateTodo(@PathVariable("todoId") Long todoId, @RequestBody Todo updatedTodo){
         return this.todoRepository.findById(todoId).map(oldTodo -> this.todoRepository.save(updatedTodo));
     }
 
-    @DeleteMapping("/users/{userId}/todo/{todoId}")
+    @DeleteMapping("/users/todos/{todoId}")
     public void deleteTodo(@PathVariable("todoId") Long todoId){
         this.todoRepository.deleteById(todoId);
     }
