@@ -64,10 +64,12 @@
             $.ajax('/api/users/todos/' + todoId, {
                 type: 'DELETE',
                 dataType: 'json',
-                timeout: 500
+                timeout: 500,
+                Success: function() {
+                    window.location.href = "/users/" + todoGid + "/todos";
+                    }
             })
         }
-        window.location.href = "/users/" + todoGid + "/todos/"
     }
 </script>
 </body>
