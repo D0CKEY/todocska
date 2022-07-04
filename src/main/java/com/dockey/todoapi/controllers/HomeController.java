@@ -4,22 +4,27 @@ import com.dockey.todoapi.entities.Role;
 import com.dockey.todoapi.entities.Todo;
 import com.dockey.todoapi.entities.TodoRepository;
 import com.dockey.todoapi.entities.User;
+import com.dockey.todoapi.services.FileUploadUtil;
 import com.dockey.todoapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.*;
 import java.util.List;
+
 
 @Controller
 
 public class HomeController {
+
+    private final String UPLOAD_DIR = "C:\\uploads";
 
     @Autowired
     private UserService service;
@@ -69,10 +74,14 @@ public class HomeController {
         service.removeUser(id);
     }
 
-    @PostMapping("/users/save") // USER SZERKESZTESENEK MENTESE
-    public String saveUser(User user) {
-        service.save(user);
-        return "redirect:/users";
+    @PostMapping("/users/save")
+    public RedirectView saveUser(User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        user.setProfilkep(fileName);
+        User savedUser = service.save(user);
+        String uploadDir = "user-photos/" + savedUser.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        return new RedirectView("/users", true);
     }
 
     @GetMapping("/users/{id}/todos")  // TODO KILISTAZASA

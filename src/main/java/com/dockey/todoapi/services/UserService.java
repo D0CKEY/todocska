@@ -2,7 +2,6 @@ package com.dockey.todoapi.services;
 
 import com.dockey.todoapi.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +44,16 @@ public class UserService {
         return roleRepo.findAll();
     }
 
-    public void save(User user) {
+    public void savewp(User user) {
         encodePassword(user);
         userRepo.save(user);
         }
+
+    public User save(User user) {
+        encodePassword(user);
+        userRepo.save(user);
+        return user;
+    }
 
     private void encodePassword(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());

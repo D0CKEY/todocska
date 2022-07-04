@@ -53,4 +53,11 @@ public class User {
         this.roles.add(role);
     }
 
+    @Transient
+    public String getPhotosImagePath() {
+        if (profilkep == null || id == null) return null;
+
+        return "/user-photos/" + id + "/" + profilkep;
+    }
+
 }
