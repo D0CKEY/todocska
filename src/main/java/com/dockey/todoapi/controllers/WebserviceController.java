@@ -70,7 +70,7 @@ public class WebserviceController {
     }
 
     @DeleteMapping("/users/todos/{todoId}")
-    public void ödeleteTodo(@PathVariable("todoId") Long todoId){
+    public void deleteTodo(@PathVariable("todoId") Long todoId){
         this.todoRepository.deleteById(todoId);
     }
 }
