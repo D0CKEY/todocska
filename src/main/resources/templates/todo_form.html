@@ -13,9 +13,11 @@
     <div>
         <h1>TODO szerkesztése</h1>
     </div>
-    <form th:action="@{|/users/todo/${todo.id}|}" th:object="${todo}" method="post" style="max-width: 600px; margin: 0 auto;">
+    <form th:action="@{/users/todo/save}" th:object="${todo}" method="post" style="max-width: 600px; margin: 0 auto;">
 
         <input type="hidden" th:field="*{id}"/>
+
+        <input type="hidden" th:field="*{gid}"/>
 
         <div class="m-3">
 
@@ -36,8 +38,8 @@
             <div class="form-group row">
                 <label class="col-4 col-form-label">Kész: </label>
                 <div class="col-8">
-                    <input th:value="${todo.kesz}" id="kesz" type="checkbox" class="m-2"/>
                     <label for="kesz">Kész?</label>
+                    <input id="kesz" type="checkbox" class="m-2" th:field="${todo.kesz}"/>
                 </div>
             </div>
 

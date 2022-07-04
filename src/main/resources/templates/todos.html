@@ -39,7 +39,7 @@
                 <td th:text="${todo.hatarido}">Hatarido</td>
                 <td th:text="${todo.kesz}">Kesz</td>
                 <td>
-                    <a th:href="@{'/users/edit/' + ${todo.id}}">Szerkesztés</a>
+                    <a th:href="@{'/users/todo/' + ${todo.id}}">Szerkesztés</a>
                 </td>
                 <td>
                     <a href="#" rel="nofollow" th:onclick="'javascript:deleteTodo(' + ${todo.id} + ')'">Törlés</a>
@@ -48,6 +48,13 @@
             </tbody>
         </table>
     </div>
+    <br>
+
+    <div>
+        <a th:href="@{|/users/${todoGid}/newtodo/|}">Uj TODO</a>
+    </div>
+
+
 </div>
 <script>
 

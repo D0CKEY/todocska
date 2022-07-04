@@ -79,13 +79,15 @@ public class HomeController {
     public String listTodo(@PathVariable("id") Long id, Model model) {
         List<Todo> listTodos = service.listTodos(id);
         model.addAttribute("listTodos", listTodos);
+        model.addAttribute("todoGid", id);
         return "todos";
     }
 
-    @PostMapping("/users/todo/{todoId}") // TODO SZERKESZTESENEK MENTESE
-    public String saveUser(@PathVariable("todoId") Long todoId, Todo todo) {
+    @PostMapping("/users/todo/save") // TODO SZERKESZTESENEK MENTESE
+    public String saveUser(Todo todo) {
+        var todoGid = todo.getGid();
         todoRepository.save(todo);
-        return "redirect:/users/{todoGid}/todos";
+        return "redirect:/users/" + todoGid + "/todos";
     }
 
     @GetMapping("/users/todo/{todoId}")  // TODO SZERKESZTESE
@@ -95,6 +97,13 @@ public class HomeController {
         return "todo_form";
     }
 
+    @GetMapping("/users/{todoGid}/newtodo")  // TODO LETREHOZASA
+    public String newTodo(@PathVariable("todoGid") Long todoGid, Model model) {
+        Todo todo = new Todo();
+        todo.setGid(todoGid);
+        model.addAttribute("todo", todo);
+        return "todo_form";
+    }
 
     //create = POST /users
     //update = Put /users/id
