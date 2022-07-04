@@ -42,7 +42,7 @@
                     <a th:href="@{'/users/todo/' + ${todo.id}}">Szerkesztés</a>
                 </td>
                 <td>
-                    <a href="#" rel="nofollow" th:onclick="'javascript:deleteTodo(' + ${todo.id} + ')'">Törlés</a>
+                    <a href="#" rel="nofollow" th:onclick="'javascript:deleteTodo(\'' + ${todo.id} +'\',\''+ ${todo.gid} + '\');'">Törlés</a>
                 </td>
             </tr>
             </tbody>
@@ -58,7 +58,7 @@
 </div>
 <script>
 
-    function deleteTodo(todoId) {
+    function deleteTodo(todoId, todoGid) {
         let confirmAction = confirm("Biztosan törlöd a TODO-t?");
         if (confirmAction) {
             $.ajax('/api/users/todos/' + todoId, {
@@ -67,7 +67,7 @@
                 timeout: 500
             })
         }
-        window.location.reload()
+        window.location.href = "/users/" + todoGid + "/todos/"
     }
 </script>
 </body>
