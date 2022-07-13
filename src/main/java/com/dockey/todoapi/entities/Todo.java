@@ -2,6 +2,8 @@ package com.dockey.todoapi.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
+
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
