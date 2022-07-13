@@ -15,8 +15,8 @@
     <div>
         <h1>Felhasználó regisztráció</h1>
     </div>
-    <form th:action="@{/registration_process}" th:object="${user}" method="post"
-          style="max-width: 600px; margin: 0 auto;">
+    <form th:action="@{/registration_process}" th:object="${user}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+
         <div class="m-3">
             <div class="form-group row">
                 <label class="col-4 col-form-label">Név: </label>
@@ -48,11 +48,17 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-4 col-form-label">Profilkép: </label>
+                <label class="col-4 col-form-label">Profilkép feltöltése: </label>
                 <div class="col-8">
-                    <input type="text" th:field="*{profilkep}" class="form-control" required/>
+                    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="image" accept="image/png, image/jpeg" class="form-control-file">
+                        </div>
+                    </form>
                 </div>
             </div>
+
+            <img th:src="@{${user.getPhotosImagePath}}" width="400" />
 
             <div>
                 <button type="submit" class="btn btn-primary">Regisztráció</button>

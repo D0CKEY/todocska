@@ -6,6 +6,7 @@ import com.dockey.todoapi.entities.TodoRepository;
 import com.dockey.todoapi.entities.User;
 import com.dockey.todoapi.services.FileUploadUtil;
 import com.dockey.todoapi.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.List;
 
 
 @Controller
+@Slf4j
 
 public class HomeController {
 
@@ -37,18 +39,25 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
+        log.info("index.html betoltese");
         return "index";
     }
 
     @GetMapping("/registration")  // USER REGISZTRACIO
     public String showRegistrationForm(Model model) {
+        log.info("felhasznalo regisztracio oldal betoltese");
         model.addAttribute("user", new User());
         return "registration";
     }
 
     @PostMapping("/registration_process")  // USER REGISZTRACIO ELMENTESE
-    public String processRegister(User user) {
+    public String processRegister(User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        user.setProfilkep(fileName);
+        String uploadDir = "user-photos/" + user.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         service.registerDefaultUser(user);
+        log.info("felhasznalo regisztracio " + user.toString());
         return "register_success";
     }
 
@@ -57,6 +66,7 @@ public class HomeController {
         List<User> listUsers = service.listAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("admin", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        log.info("Felhasznalo: " + authentication.getName() + " / Felhasznalok kilistazasa");
         return "users";
     }
 
@@ -66,6 +76,7 @@ public class HomeController {
         List<Role> listRoles = service.listRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
+        log.info("Felhasznalo: " + user.getUsername() + " / Felhasznalo szerkesztese");
         return "user_form";
     }
 

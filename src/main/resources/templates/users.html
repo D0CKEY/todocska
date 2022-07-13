@@ -28,6 +28,7 @@
                 <th>Felhasználó neve</th>
                 <th>E-mail</th>
                 <th>Username</th>
+                <th>Profilkép</th>
                 <th>Jogosultságok</th>
                 <th>Szerkesztés</th>
                 <th>Törlés</th>
@@ -40,6 +41,7 @@
                 <td th:text="${user.nev}">Felhasználó neve</td>
                 <td th:text="${user.email}">E-mail</td>
                 <td th:text="${user.username}">Username</td>
+                <td th:text="${user.profilkep}">Profilkép</td>
                 <td th:text="${user.roles}">Jogosultságok</td>
                 <td th:if="${#authentication.name == user.username or admin}">
                     <a th:href="@{'/users/edit/' + ${user.id}}">Szerkesztés</a>
