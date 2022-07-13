@@ -12,8 +12,8 @@
 <body>
 <div class="container text-center">
     <br>
-    <form action="/logout">
-        <input type="submit" class="btn btn-primary" value="Kijelentkezés"/>
+    <form action="/users">
+        <input type="submit" class="btn btn-primary" value="Vissza"/>
     </form>
     <br>
     <div>
@@ -42,18 +42,29 @@
                     <a th:href="@{'/users/todo/' + ${todo.id}}">Szerkesztés</a>
                 </td>
                 <td>
-                    <a href="#" rel="nofollow" th:onclick="'javascript:deleteTodo(\'' + ${todo.id} +'\',\''+ ${todo.gid} + '\');'">Törlés</a>
+                    <a href="#" rel="nofollow"
+                       th:onclick="'javascript:deleteTodo(\'' + ${todo.id} +'\',\''+ ${todo.gid} + '\');'">Törlés</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
     <br>
 
     <div>
-        <a th:href="@{|/users/${todoGid}/newtodo/|}">Uj TODO</a>
+        <form th:action="@{|/users/${todoGid}/newtodo/|}">
+            <input type="submit" class="btn btn-primary" value="Új TODO"/>
+        </form>
     </div>
 
+    <br>
+
+    <div>
+        <form action="/logout">
+            <input type="submit" class="btn btn-primary" value="Kijelentkezés"/>
+        </form>
+    </div>
 
 </div>
 <script>
@@ -64,11 +75,10 @@
             $.ajax('/api/users/todos/' + todoId, {
                 type: 'DELETE',
                 dataType: 'json',
-                timeout: 500,
-                Success: function() {
-                    window.location.href = "/users/" + todoGid + "/todos";
-                    }
+                timeout: 2000,
+                async: false
             })
+            window.location.href = "/users/" + todoGid + "/todos"
         }
     }
 </script>

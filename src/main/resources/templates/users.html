@@ -65,11 +65,13 @@
             $.ajax('/users/' + userId, {
                 type: 'DELETE',
                 dataType: 'json',
-                timeout: 500
+                timeout: 2000,
+                async: false
             })
             $.ajax('/logout', {
                 type: 'POST',
-                timeout: 500
+                timeout: 2000,
+                async: false
             })
             window.location.href = "/index.html"
         }
