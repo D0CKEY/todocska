@@ -2,8 +2,12 @@ package com.dockey.todoapi.config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
- 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  
@@ -23,5 +27,12 @@ public class MvcConfig implements WebMvcConfigurer {
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
          
         registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
+    }
+
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        final Map<String, String> parameterMap = new HashMap<String, String>();
+        parameterMap.put("charset", "utf-8");
+        configurer.defaultContentType(new MediaType(MediaType.APPLICATION_JSON, parameterMap));
     }
 }

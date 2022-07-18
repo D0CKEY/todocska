@@ -66,7 +66,6 @@ public class HomeController {
         List<User> listUsers = service.listAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("admin", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
-
         log.info("Bejelentkezett user: " + authentication.getName() + " / Userek kilistazasa");
         return "users";
     }
