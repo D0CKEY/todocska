@@ -37,101 +37,101 @@ public class HomeController {
         this.todoRepository = todoRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/")  // INDEX.HTML
     public String index(Model model) {
-        log.info("index.html betoltese");
+        log.info("Load index.html");
         return "index";
     }
 
-    @GetMapping("/registration")  // USER REGISZTRACIO
+    @GetMapping("/registration")  // USER REGISTRATION
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
-        log.info("Felhasznalo regisztracio oldal betoltese");
+        log.info("Load user registration page");
         return "registration";
     }
 
-    @PostMapping("/registration_process")  // USER REGISZTRACIO ELMENTESE
+    @PostMapping("/registration_process")  // SAVE USER REGISTRATION
     public String processRegister(User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         user.setProfilkep(fileName);
         String uploadDir = "user-photos/" + user.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         service.registerDefaultUser(user);
-        log.info("Felhasznalo regisztracio / " + user);
+        log.info("User registration / " + user);
         return "register_success";
     }
 
-    @GetMapping("/users")  // USEREK KILISTAZASA
+    @GetMapping("/users")  // LIST USERS
     public String listUsers(Model model, Authentication authentication) {
         List<User> listUsers = service.listAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("admin", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
-        log.info("Bejelentkezett user: " + authentication.getName() + " / Userek kilistazasa");
+        log.info("Logged user: " + authentication.getName() + " / List users");
         return "users";
     }
 
-    @GetMapping("/users/edit/{id}")  // USER SZERKESZTESE
+    @GetMapping("/users/edit/{id}")  // EDIT USER
     public String editUser(@PathVariable("id") Long id, Model model, Authentication authentication) {
         User user = service.get(id);
         List<Role> listRoles = service.listRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / User szerkesztese");
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / Edit user");
         return "user_form";
     }
 
-    @DeleteMapping("/users/{id}")  // USER TORLESE
+    @DeleteMapping("/users/{id}")  // DELETE USER
     public void deleteUser(@PathVariable("id") Long id, Authentication authentication) {
         User user = service.get(id);
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / User torlese");
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / Delete user");
         service.removeUser(id);
     }
 
-    @PostMapping("/users/save")
+    @PostMapping("/users/save")  // SAVE USER
     public RedirectView saveUser(User user, Authentication authentication, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         user.setProfilkep(fileName);
         User savedUser = service.save(user);
         String uploadDir = "user-photos/" + savedUser.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + savedUser.getUsername() + " / User mentese / " + savedUser);
+        log.info("Logged user: " + authentication.getName() + " User: " + savedUser.getUsername() + " / Save user / " + savedUser);
         return new RedirectView("/users", true);
     }
 
-    @GetMapping("/users/{id}/todos")  // TODO KILISTAZASA
+    @GetMapping("/users/{id}/todos")  // LIST TODOS
     public String listTodo(@PathVariable("id") Long id, Model model, Authentication authentication) {
         List<Todo> listTodos = service.listTodos(id);
         model.addAttribute("listTodos", listTodos);
         model.addAttribute("todoGid", id);
         User user = service.get(id);
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / TODO listazasa");
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / List todos");
         return "todos";
     }
 
-    @GetMapping("/users/todo/{todoId}")  // TODO SZERKESZTESE
+    @GetMapping("/users/todo/{todoId}")  // EDIT TODO
     public String editTodo(@PathVariable("todoId") Long todoId, Model model, Authentication authentication) {
         Todo todo = todoRepository.findById(todoId).get();
         model.addAttribute("todo", todo);
         User user = service.get(todo.getGid());
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / TODO szerkesztese");
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / Edit todo");
         return "todo_form";
     }
 
-    @PostMapping("/users/todo/save")  // TODO SZERKESZTESENEK MENTESE
+    @PostMapping("/users/todo/save")  // SAVE TODO
     public String saveUser(Todo todo, Authentication authentication) {
         todoRepository.save(todo);
         User user = service.get(todo.getGid());
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / TODO mentese / " + todo);
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / Save todo / " + todo);
         return "redirect:/users/" + todo.getGid() + "/todos";
     }
 
-    @GetMapping("/users/{todoGid}/newtodo")  // TODO LETREHOZASA
+    @GetMapping("/users/{todoGid}/newtodo")  // NEW TODO
     public String newTodo(@PathVariable("todoGid") Long todoGid, Model model, Authentication authentication) {
         Todo todo = new Todo();
         todo.setGid(todoGid);
         model.addAttribute("todo", todo);
         User user = service.get(todo.getGid());
-        log.info("Bejelentkezett user: " + authentication.getName() + " User: " + user.getUsername() + " / TODO letrehozasa");
+        log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / New todo");
         return "todo_form";
     }
 
