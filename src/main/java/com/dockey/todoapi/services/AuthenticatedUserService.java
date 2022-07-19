@@ -17,12 +17,10 @@ public class AuthenticatedUserService {
     private UserRepository userRepository;
 
     public boolean hasId(Long id) {
-        log.info("------------------------------------");
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("------------------------------------" + username);
-        System.out.println(username);
+        log.info("---Authenticated user: " + username);
         User user = userRepository.findByUsername(username);
-        log.info("------------------------------------" + user.getId());
+        log.info("---Authenticated userId: " + user.getId());
         return user.getId().equals(id);
 
     }
