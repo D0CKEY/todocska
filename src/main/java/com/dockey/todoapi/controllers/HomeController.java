@@ -6,7 +6,6 @@ import com.dockey.todoapi.entities.TodoRepository;
 import com.dockey.todoapi.entities.User;
 import com.dockey.todoapi.services.FileUploadUtil;
 import com.dockey.todoapi.services.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
