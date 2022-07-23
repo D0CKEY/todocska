@@ -24,8 +24,11 @@ public class UserService {
 
     public void registerDefaultUser(User user) {
         encodePassword(user);
-        userRepo.save(user);
         Role roleUser = roleRepo.findByName("ROLE_USER");
+        if (userRepo.count() == 0) {
+            roleUser = roleRepo.findByName("ROLE_ADMIN");
+        }
+        userRepo.save(user);
         user.addRole(roleUser);
         userRepo.save(user);
     }

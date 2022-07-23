@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -81,6 +81,7 @@ public class HomeController {
         List<Role> listRoles = service.listRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
+        model.addAttribute("admin", authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
         log.info("Logged user: " + authentication.getName() + " User: " + user.getUsername() + " / Edit user");
         return "user_form";
     }

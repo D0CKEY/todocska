@@ -12,7 +12,9 @@
     <div>
         <h1>Felhasználó szerkesztése</h1>
     </div>
-    <form th:action="@{/users/save}" th:object="${user}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+    <form enctype="multipart/form-data" method="post" style="max-width: 600px; margin: 0 auto;"
+          th:action="@{/users/save}"
+          th:object="${user}">
 
         <input type="hidden" th:field="*{id}"/>
 
@@ -58,15 +60,18 @@
                 </div>
             </div>
 
-            <img th:src="@{${user.getPhotosImagePath}}" width="400" />
+            <img th:src="@{${user.getPhotosImagePath}}" width="400"/>
+
 
             <div class="form-group row">
                 <label class="col-4 col-form-label">Jogosultságok: </label>
                 <div class="col-8">
-                    <th:block th:each="role: ${listRoles}">
-                        <input type="checkbox" th:field="*{roles}"
-                               th:text="${role.name}" th:value="${role.id}" class="m-2"/>
-                    </th:block>
+                    <div th:if="${admin}">
+                        <th:block th:each="role: ${listRoles}">
+                            <input class="m-2" th:field="*{roles}"
+                                   th:text="${role.name}" th:value="${role.id}" type="checkbox"/>
+                        </th:block>
+                    </div>
                 </div>
             </div>
 
