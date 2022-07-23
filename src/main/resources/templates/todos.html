@@ -74,7 +74,7 @@
     function deleteTodo(todoId, todoGid) {
         let confirmAction = confirm("Biztosan törlöd a TODO-t?");
         if (confirmAction) {
-            $.ajax('/api/users/todos/' + todoId, {
+            $.ajax('/api/users/' + todoGid + '/todos/' + todoId, {
                 type: 'DELETE',
                 dataType: 'json',
                 timeout: 2000,
