@@ -4,12 +4,19 @@ import com.dockey.todoapi.entities.Todo;
 import com.dockey.todoapi.entities.TodoRepository;
 import com.dockey.todoapi.entities.User;
 import com.dockey.todoapi.entities.UserRepository;
+import com.dockey.todoapi.services.FileUploadUtil;
 import com.dockey.todoapi.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +29,8 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class WebserviceController {
 
+    private final String UPLOAD_DIR = "C:\\uploads";
+
     private final UserRepository userRepository;
 
     private final TodoRepository todoRepository;
@@ -29,7 +38,7 @@ public class WebserviceController {
     @Autowired
     private UserService service;
 
-    public WebserviceController(UserRepository userRepository, TodoRepository todoRepository){
+    public WebserviceController(UserRepository userRepository, TodoRepository todoRepository) {
         this.userRepository = userRepository;
         this.todoRepository = todoRepository;
     }
@@ -65,6 +74,24 @@ public class WebserviceController {
     public void deleteUser(@PathVariable("userId") Long userId) {
         log.info("REST API - DELETE USER");
         service.removeUser(userId);
+    }
+
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or @authenticatedUserService.hasId(#userId)")  // DELETE USER
+    @RequestMapping(value = "/users/{userId}/uploadImage", method = RequestMethod.POST)
+    public ResponseEntity<Object> imageUpload(@PathVariable("userId") Long userId, @RequestParam("File") MultipartFile multipartFile) throws IOException {
+        User user = service.get(userId);
+        String fileNameExt = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        if (fileNameExt.equals("png") || fileNameExt.equals("jpg")) {
+            String newFileName = userId + "." + fileNameExt;
+            String uploadDir = "user-photos/";
+            user.setProfilkep(newFileName);
+            service.saveWithoutPwd(user);
+            FileUploadUtil.saveFile(uploadDir, newFileName, multipartFile);
+            log.info("REST API - USER IMAGE UPLOAD");
+        } else {
+            throw new IOException();
+        }
+        return new ResponseEntity<>("The File Uploaded Successfully", HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasRole('ROLE_ADMIN') or @authenticatedUserService.hasId(#userId)")  // LIST USER'S TODOS

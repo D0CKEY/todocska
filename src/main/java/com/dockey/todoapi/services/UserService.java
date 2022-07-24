@@ -47,10 +47,9 @@ public class UserService {
         return roleRepo.findAll();
     }
 
-    public void savewp(User user) {
-        encodePassword(user);
+    public void saveWithoutPwd(User user) {
         userRepo.save(user);
-        }
+    }
 
     public User save(User user) {
         encodePassword(user);

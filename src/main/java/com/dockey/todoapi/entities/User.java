@@ -3,10 +3,9 @@ package com.dockey.todoapi.entities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,7 +56,7 @@ public class User {
     public String getPhotosImagePath() {
         if (profilkep == null || id == null) return null;
 
-        return "/user-photos/" + id + "/" + profilkep;
+        return "/user-photos/" + profilkep;
     }
 
 }

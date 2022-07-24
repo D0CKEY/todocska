@@ -57,10 +57,11 @@ public class HomeController {
 
     @PostMapping("/registration_process")  // SAVE USER REGISTRATION
     public String processRegister(User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        user.setProfilkep(fileName);
-        String uploadDir = "user-photos/" + user.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        String fileNameExt = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        String newFileName = user.getId() + "." + fileNameExt;
+        String uploadDir = "user-photos/";
+        user.setProfilkep(newFileName);
+        FileUploadUtil.saveFile(uploadDir, newFileName, multipartFile);
         service.registerDefaultUser(user);
         log.info("User registration / " + user);
         return "register_success";
@@ -95,11 +96,12 @@ public class HomeController {
 
     @PostMapping("/users/save")  // SAVE USER
     public RedirectView saveUser(User user, Authentication authentication, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        user.setProfilkep(fileName);
+        String fileNameExt = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        String newFileName = user.getId() + "." + fileNameExt;
+        String uploadDir = "user-photos/";
+        user.setProfilkep(newFileName);
         User savedUser = service.save(user);
-        String uploadDir = "user-photos/" + savedUser.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        FileUploadUtil.saveFile(uploadDir, newFileName, multipartFile);
         log.info("Logged user: " + authentication.getName() + " User: " + savedUser.getUsername() + " / Save user / " + savedUser);
         return new RedirectView("/users", true);
     }
