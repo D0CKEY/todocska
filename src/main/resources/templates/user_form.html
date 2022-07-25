@@ -25,7 +25,7 @@
     </div>
 
     <form enctype="multipart/form-data" method="post" style="max-width: 600px; margin: 0 auto;"
-          th:action="@{/users/save}" th:object="${user}">
+          th:action="@{|/users/${user.id}/save|}" th:object="${user}">
 
         <input type="hidden" th:field="*{id}"/>
 

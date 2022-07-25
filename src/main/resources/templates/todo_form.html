@@ -14,7 +14,8 @@
         <h1>TODO szerkesztése</h1>
     </div>
     <hr>
-    <form th:action="@{/users/todo/save}" th:object="${todo}" method="post" style="max-width: 600px; margin: 0 auto;">
+    <form method="post" style="max-width: 600px; margin: 0 auto;" th:action="@{|/users/${todo.gid}/todo/save|}"
+          th:object="${todo}">
 
         <input type="hidden" th:field="*{id}"/>
 

@@ -35,7 +35,7 @@
                 <td th:text="${todo.hatarido}">Hatarido</td>
                 <td th:text="${todo.kesz}">Kesz</td>
                 <td>
-                    <a th:href="@{'/users/todo/' + ${todo.id}}">Szerkesztés</a>
+                    <a th:href="@{|/users/${todo.gid}/todo/${todo.id}|}">Szerkesztés</a>
                 </td>
                 <td>
                     <a href="#" rel="nofollow"
