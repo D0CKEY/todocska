@@ -54,8 +54,9 @@ public class User {
 
     @Transient
     public String getPhotosImagePath() {
-        if (profilkep == null || id == null) return null;
-
+        if (profilkep == null || id == null) {
+            return "";
+        }
         return "/user-photos/" + profilkep;
     }
 

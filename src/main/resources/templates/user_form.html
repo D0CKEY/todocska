@@ -14,11 +14,22 @@
         <h1>Felhasználó szerkesztése</h1>
     </div>
     <hr>
+
+    <div>
+        <input id="fileupload" name="fileupload" type="file"/>
+        <button id="upload-button" th:onclick="'javascript:uploadImage(' + ${user.id} + ')'"> Upload</button>
+    </div>
+    <br>
+    <div th:if="${!user.getPhotosImagePath().isEmpty()}">
+        <img th:src="@{${user.getPhotosImagePath}}" width="400"/>
+    </div>
+
     <form enctype="multipart/form-data" method="post" style="max-width: 600px; margin: 0 auto;"
-          th:action="@{/users/save}"
-          th:object="${user}">
+          th:action="@{/users/save}" th:object="${user}">
 
         <input type="hidden" th:field="*{id}"/>
+
+        <input th:field="*{profilkep}" type="hidden"/>
 
         <div class="m-3">
 
@@ -52,20 +63,6 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-4 col-form-label">Profilkép feltöltése: </label>
-                <div class="col-8">
-                    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input accept="image/png, image/jpeg" class="btn btn-primary form-control-file" name="image"
-                                   type="file">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <img th:src="@{${user.getPhotosImagePath}}" width="400"/>
-
-            <div class="form-group row">
                 <label class="col-4 col-form-label">Jogosultságok: </label>
                 <div class="col-8">
                     <div th:if="${admin}">
@@ -74,15 +71,46 @@
                                    th:text="${role.name}" th:value="${role.id}" type="checkbox"/>
                         </th:block>
                     </div>
+                    <div th:if="${!admin}">
+                        <th:block th:each="role: ${listRoles}">
+                            <input class="m-2" onclick="return false;"
+                                   th:field="*{roles}" th:text="${role.name}" th:value="${role.id}" type="checkbox">
+                        </th:block>
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn-primary">Mentés</button>
+            <div class="d-flex justify-content-sm-between">
+                <div>
+                    <button class="btn btn-primary" onclick="window.location.href='/users';" type="button">Vissza
+                    </button>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" type="submit">Mentés</button>
+                </div>
             </div>
+
+
         </div>
     </form>
 
 </div>
+
+<script>
+    async function uploadImage(userId) {
+        let formData = new FormData();
+        formData.append("file", fileupload.files[0]);
+        let response = await fetch('/api/users/' + userId + '/uploadimage', {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.status == 200) {
+            location.reload();
+        }
+    }
+</script>
+
 </body>
 </html>

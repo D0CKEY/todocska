@@ -48,20 +48,6 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Profilkép feltöltése: </label>
-                <div class="col-8">
-                    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input accept="image/png, image/jpeg" class="btn btn-primary form-control-file" name="image"
-                                   type="file">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <img th:src="@{${user.getPhotosImagePath}}" width="400" />
-
             <div>
                 <button type="submit" class="btn btn-primary">Regisztráció</button>
             </div>

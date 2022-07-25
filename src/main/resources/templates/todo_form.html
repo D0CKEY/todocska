@@ -44,8 +44,17 @@
                 </div>
             </div>
 
-            <div>
-                <button class="btn btn-primary" type="submit">Mentés</button>
+            <div class="d-flex justify-content-sm-between">
+                <div>
+                    <button class="btn btn-primary"
+                            th:onclick="'javascript:location.href=\'' + @{|/users/${todo.gid}/todos|} + '\''"
+                            type="button">Vissza
+                    </button>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" type="submit">Mentés</button>
+                </div>
             </div>
         </div>
     </form>

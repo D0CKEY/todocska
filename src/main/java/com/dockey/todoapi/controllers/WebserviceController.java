@@ -77,8 +77,8 @@ public class WebserviceController {
     }
 
     @PreAuthorize(value = "hasRole('ROLE_ADMIN') or @authenticatedUserService.hasId(#userId)")  // DELETE USER
-    @RequestMapping(value = "/users/{userId}/uploadImage", method = RequestMethod.POST)
-    public ResponseEntity<Object> imageUpload(@PathVariable("userId") Long userId, @RequestParam("File") MultipartFile multipartFile) throws IOException {
+    @RequestMapping(value = "/users/{userId}/uploadimage", method = RequestMethod.POST)
+    public ResponseEntity<Object> imageUpload(@PathVariable("userId") Long userId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         User user = service.get(userId);
         String fileNameExt = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
         if (fileNameExt.equals("png") || fileNameExt.equals("jpg")) {
